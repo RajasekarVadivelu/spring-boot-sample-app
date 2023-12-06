@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+    <appender name="ConsoleTrace" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <fieldNames>
+                <version>[ignore]</version>
+            </fieldNames>
+           <!-- <includeMdc>true</includeMdc>-->
+        </encoder>
+    </appender>
+
+    <appender name="ConsoleDev" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <springProfile name="local">
+        <root level="debug">
+            <appender-ref ref="ConsoleTrace" />
+        </root>
+    </springProfile>
+
+    <springProfile name="dev|sit">
+        <logger name="no.posten.ph" level="debug" />
+        <logger name="com.azure.cosmos.implementation.SqlQuerySpecLogger" level="debug" />
+        <root level="info">
+            <appender-ref ref="Console" />
+        </root>
+    </springProfile>
+    <springProfile name="qa">
+        <root level="info">
+            <appender-ref ref="Console" />
+        </root>
+    </springProfile>
+    <springProfile name="prod">
+        <root level="info">
+            <appender-ref ref="Console" />
+        </root>
+    </springProfile>
+    <root level="debug">
+        <appender-ref ref="ConsoleTrace" />
+    </root>
+</configuration>

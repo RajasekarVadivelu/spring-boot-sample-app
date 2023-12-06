@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: spring-boot-sample-app
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url:  jdbc:postgresql://localhost:5432/ph-ods?currentSchema=logs
+    username: postgres
+    password: postgres
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 5
+      idle-timeout: 10000
+  output:
+    ansi:
+      enabled: DETECT
+
+logging:
+  level:
+    root: INFO
+#  pattern:
+#    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+management:
+  metrics:
+    enable:
+      http: false
+      jvm: false
+      system: false
+      tomcat: false
+      spring:
+        data: false
+      process: false
+      disk: false
+      executor: false
+      kafka.consumer.fetch.manager.records.lag: true
+      kafka.consumer: false
+    kafka:
+      consumer:
+        enabled: true
+  endpoints:
+    prometheus:
+      enabled: true
+    web:
+      exposure:
+        include: "*"
+
+
+
+
+
