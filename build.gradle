@@ -46,7 +46,6 @@ repositories {
 }
 dependencies {
 	implementation 'com.fasterxml.woodstox:woodstox-core:6.4.0'
-	implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
 	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 	implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
@@ -56,22 +55,42 @@ dependencies {
 	implementation 'org.postgresql:postgresql:42.4.1'
 	implementation 'io.micrometer:micrometer-core'
 
+	implementation 'com.fasterxml.woodstox:woodstox-core:6.4.0'
+
+	implementation 'jakarta.activation:jakarta.activation-api:2.1.0'
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'io.micrometer:micrometer-registry-prometheus'
+/*	implementation 'io.micrometer:micrometer-core'
 	implementation 'io.micrometer:micrometer-tracing'
 	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
-//	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'io.zipkin.brave:brave'*/
+
+
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation('io.micrometer:micrometer-tracing-bridge-brave')
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave' //May not required
+
+
+
 	implementation 'org.springframework.kafka:spring-kafka'
-	implementation 'org.yaml:snakeyaml:1.33'
+	implementation 'org.springframework:spring-core:6.0.4'
+	implementation 'org.yaml:snakeyaml:2.0'
+
+	testImplementation 'org.apache.kafka:kafka_2.13'
+	testImplementation 'org.apache.kafka:kafka-clients'
 
 	implementation('io.netty:netty-codec') {
 		version {
 			strictly '4.1.85.Final'
 		}
 	}
+
 
 	testImplementation 'org.apache.kafka:kafka_2.13'
 	testImplementation 'org.apache.kafka:kafka-clients'
@@ -81,10 +100,9 @@ dependencies {
 	testImplementation 'org.testcontainers:postgresql:1.17.6'
 	testImplementation 'org.testcontainers:testcontainers:1.17.6'
 
-	testImplementation ('org.springframework.kafka:spring-kafka-test') {
-		// needed if downgrading to Apache Kafka 2.8.1
-		exclude group: 'org.apache.zookeeper', module: 'zookeeper'
-	}
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+
 
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:' + junitJupiterVersion
 }

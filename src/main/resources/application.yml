@@ -13,12 +13,48 @@ spring:
   output:
     ansi:
       enabled: DETECT
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: kafka-consumergroup-test
+      topic: greeting-topic
+      retryMaxIntervalSecs: 4
+      maxElapsedTime: 10
+      retryInitialIntervalSecs: 10
+      request-timeout: 600000
+      max-age: 180000
+      pollTimeout: 120000
+      username:
+      connectionString:
+      login-module: org.apache.kafka.common.security.plain.PlainLoginModule
+      sasl-mechanism: PLAIN
+      security-protocol: SASL_SSL
+      truststore-location:
+      truststore-password:
+      offset-auto-reset: latest
+      concurrency: 1
+      client-config-id:
+    producer:
+      bootstrap-servers: localhost:9092
+      deadlettertopic: dlt-topic
+      username:
+      connectionString:
+      acks-config: 1
+      linger: 0
+      request-timeout: 60000    #60 secs
+      delivery-timeout: 60000 #60 secs
+      retries: 2
+      metadata-max-idle: 180000
+      metadata-max-age: 180000
+      connections-max-idle: 180000
+      batch-size: 16384
+      send-buffer: 131072
 
 logging:
   level:
-    root: INFO
-#  pattern:
-#    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+    org.springframework: ERROR
+# pattern.level: '%5p [TraceID: %X{traceId}] %c: %m%n'
+
 
 management:
   metrics:
@@ -43,6 +79,16 @@ management:
     web:
       exposure:
         include: "*"
+
+# All traces should be sent to latency analysis tool
+  management.tracing.sampling.probability: 1.0
+  management.endpoints.web.exposure.include: prometheus
+
+  # For Exemplars to work we need histogram buckets
+  management.metrics.distribution.percentiles-histogram.http.server.requests: true
+
+  # traceID and spanId are predefined MDC keys - we want the logs to include them
+  logging.pattern.level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
 
 
 

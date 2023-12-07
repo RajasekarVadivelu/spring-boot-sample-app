@@ -8,6 +8,11 @@
             <fieldNames>
                 <version>[ignore]</version>
             </fieldNames>
+            <Pattern>
+                <!-- %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n -->
+                .%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]
+                - %msg%n
+            </Pattern>
            <!-- <includeMdc>true</includeMdc>-->
         </encoder>
     </appender>
@@ -43,7 +48,8 @@
             <appender-ref ref="Console" />
         </root>
     </springProfile>
-    <root level="debug">
+    <root level="INFO">
+        <logger name="com.springboot.sample.app" level="info" />
         <appender-ref ref="ConsoleTrace" />
     </root>
 </configuration>
